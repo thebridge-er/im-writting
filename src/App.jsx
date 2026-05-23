@@ -6,6 +6,7 @@ import Notes from "./components/Notes/Notes";
 import Timeline from "./components/Timeline/Timeline";
 import Characters from "./components/Characters/Characters";
 import Outline from "./components/Outline/Outline";
+import Auth from "./components/Auth/Auth";
 
 import "./App.css";
 
@@ -22,6 +23,17 @@ function App() {
   const [activeChapterId, setActiveChapterId] = useState(null);
 
   const [outlineOpen, setOutlineOpen] = useState(false);
+
+  const [user, setUser] = useState(
+
+    JSON.parse(localStorage.getItem("loggedUser"))
+
+  );
+
+  if (!user) {
+
+    return <Auth setUser={setUser} />;
+  }
 
   return (
     <div className="app">
