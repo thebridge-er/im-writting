@@ -3,20 +3,27 @@ import "./Sidebar.css";
 function Sidebar({
     sidebarOpen,
     setView,
-    setOutlineOpen
+    setOutlineOpen,
+    setUser
 }) {
+
+    function openChapters() {
+        setView("editor");
+        setOutlineOpen(true);
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedUser");
+        setUser(null);
+    }
 
     return (
         <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
 
             <h1>I'm Writting!</h1>
 
-            <button onClick={() => setOutlineOpen(true)}>
+            <button onClick={openChapters}>
                 Chapters
-            </button>
-
-            <button onClick={() => setView("editor")}>
-                Editor
             </button>
 
             <button onClick={() => setView("timeline")}>
@@ -27,7 +34,9 @@ function Sidebar({
                 Characters
             </button>
 
-
+            <button className="logout-button" onClick={logout}>
+                Log out
+            </button>
 
         </div>
     );

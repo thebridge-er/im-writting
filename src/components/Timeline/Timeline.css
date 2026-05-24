@@ -97,3 +97,16 @@
 .timeline-event:last-child::after {
     display: none;
 }
+
+.timeline-form select {
+
+    background-color: #5f5e5e;
+
+    color: white;
+
+    border: none;
+
+    padding: 12px 16px;
+
+    font-size: 14px;
+}

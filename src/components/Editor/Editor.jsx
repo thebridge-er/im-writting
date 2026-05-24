@@ -3,7 +3,8 @@ import "./Editor.css";
 function Editor({
     chapters,
     setChapters,
-    activeChapterId
+    activeChapterId,
+    setOutlineOpen
 }) {
 
     const activeChapter = chapters.find(
@@ -39,12 +40,26 @@ function Editor({
 
     }
 
+    // EMPTY STATE
     if (!activeChapter) {
 
         return (
+
             <div className="editor-empty">
-                Select or create a chapter to start writing
+
+                <h2>
+                    Create a chapter to start writing
+                </h2>
+
+                <button
+                    className="create-chapter-button"
+                    onClick={() => setOutlineOpen(true)}
+                >
+                    Create Chapter
+                </button>
+
             </div>
+
         );
 
     }
@@ -57,10 +72,6 @@ function Editor({
 
                 <h2>{activeChapter.title}</h2>
 
-                <p className="word-count">
-                    {wordCount} words
-                </p>
-
             </div>
 
             <textarea
@@ -68,6 +79,10 @@ function Editor({
                 onChange={handleChange}
                 placeholder="Start writing..."
             />
+
+            <div className="word-count">
+                {wordCount} words
+            </div>
 
         </div>
 

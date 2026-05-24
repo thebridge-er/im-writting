@@ -55,13 +55,14 @@ function App() {
         className="notes-button"
         onClick={() => setNotesOpen(!notesOpen)}
       >
-        📝
+        Take a note!
       </button>
 
       <Sidebar
         sidebarOpen={sidebarOpen}
         setView={setView}
         setOutlineOpen={setOutlineOpen}
+        setUser={setUser}
       />
 
       {outlineOpen && (
@@ -84,6 +85,7 @@ function App() {
             chapters={chapters}
             setChapters={setChapters}
             activeChapterId={activeChapterId}
+            setOutlineOpen={setOutlineOpen}
           />
 
         </div>
