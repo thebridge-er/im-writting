@@ -6,52 +6,55 @@ function Editor({
     activeChapterId
 }) {
 
-    const activeChapter =
-        chapters.find(
-            (chapter) => chapter.id === activeChapterId
-        );
+    const activeChapter = chapters.find(
+        ch => ch._id === activeChapterId
+    );
 
-    function updateContent(e) {
+    function handleChange(e) {
 
-        const updatedChapters =
-            chapters.map((chapter) => {
+        const updatedChapters = chapters.map((chapter) => {
 
-                if (chapter.id === activeChapterId) {
+            if (chapter._id === activeChapterId) {
 
-                    return {
-                        ...chapter,
-                        content: e.target.value
-                    };
-                }
+                return {
+                    ...chapter,
+                    content: e.target.value
+                };
 
-                return chapter;
-            });
+            }
+
+            return chapter;
+
+        });
 
         setChapters(updatedChapters);
+
     }
 
     if (!activeChapter) {
 
         return (
-            <div className="editor">
-                <h2>Select or create a chapter</h2>
+            <div className="editor-empty">
+                Select or create a chapter to start writing
             </div>
         );
+
     }
 
     return (
 
         <div className="editor">
 
-            <h1>{activeChapter.title}</h1>
+            <h2>{activeChapter.title}</h2>
 
             <textarea
                 value={activeChapter.content}
-                onChange={updateContent}
+                onChange={handleChange}
                 placeholder="Start writing..."
             />
 
         </div>
+
     );
 }
 

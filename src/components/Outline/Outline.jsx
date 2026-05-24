@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./Outline.css";
 
@@ -12,30 +12,130 @@ function Outline({
 
     const [title, setTitle] = useState("");
 
+    // LOAD CHAPTERS FROM BACKEND
+    useEffect(() => {
+
+        fetch("http://localhost:5000/api/chapters")
+            .then((res) => res.json())
+            .then((data) => {
+
+                console.log("CHAPTERS:", data);
+
+                if (Array.isArray(data)) {
+
+                    setChapters(data);
+
+                } else {
+
+                    setChapters([]);
+
+                }
+
+            })
+            .catch((err) => {
+
+                console.log("Error loading chapters:", err);
+
+            });
+
+    }, []);
+
+    // ADD CHAPTER
     function addChapter() {
 
         if (title.trim() === "") return;
 
         const newChapter = {
-            id: Date.now(),
-            title,
+
+            title: title.trim(),
+
             content: ""
+
         };
 
-        setChapters([...chapters, newChapter]);
+        console.log("SENDING:", newChapter);
 
-        setActiveChapterId(newChapter.id);
-        setOutlineOpen(false);
+        fetch("http://localhost:5000/api/chapters", {
 
-        setTitle("");
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(newChapter)
+
+        })
+            .then((res) => res.json())
+            .then((createdChapter) => {
+
+                console.log("CREATED:", createdChapter);
+
+                setChapters((prev) => [
+
+                    ...prev,
+                    createdChapter
+
+                ]);
+
+                setActiveChapterId(createdChapter._id);
+
+                setTitle("");
+
+            })
+            .catch((err) => {
+
+                console.log("Error creating chapter:", err);
+
+            });
+    }
+    // DELETE CHAPTER
+    function deleteChapter(id) {
+
+        fetch(`http://localhost:5000/api/chapters/${id}`, {
+
+            method: "DELETE"
+
+        })
+            .then(() => {
+
+                setChapters((prev) =>
+                    prev.filter((chapter) => chapter._id !== id)
+                );
+
+                if (activeChapterId === id) {
+
+                    setActiveChapterId(null);
+
+                }
+
+            })
+            .catch((err) => {
+
+                console.log("Error deleting chapter:", err);
+
+            });
     }
 
     return (
 
         <div className="outline">
 
-            <h2>Chapters</h2>
+            {/* HEADER */}
+            <div className="outline-header">
 
+                <h2>Chapters</h2>
+
+                <button
+                    className="close-outline"
+                    onClick={() => setOutlineOpen(false)}
+                >
+                    ←
+                </button>
+
+            </div>
+
+            {/* CREATE CHAPTER */}
             <div className="outline-form">
 
                 <input
@@ -51,32 +151,50 @@ function Outline({
 
             </div>
 
+            {/* CHAPTER LIST */}
             <div className="chapters-list">
 
-                {chapters.map((chapter) => (
+                {Array.isArray(chapters) &&
+                    chapters.map((chapter) => (
 
-                    <div
-                        key={chapter.id}
-                        className={`chapter-item ${activeChapterId === chapter.id ? "active" : ""
-                            }`}
-                        onClick={() => {
+                        <div
+                            key={chapter._id}
+                            className={`chapter-item ${activeChapterId === chapter._id
+                                ? "active"
+                                : ""
+                                }`}
+                            onClick={() => {
 
-                            setActiveChapterId(chapter.id);
+                                setActiveChapterId(chapter._id);
 
-                            setOutlineOpen(false);
+                            }}
+                        >
 
-                        }}
-                    >
+                            <span>
+                                {chapter.title}
+                            </span>
 
-                        {chapter.title}
+                            <button
+                                className="delete-chapter"
+                                onClick={(e) => {
 
-                    </div>
+                                    e.stopPropagation();
 
-                ))}
+                                    deleteChapter(chapter._id);
+
+                                }}
+                            >
+                                ✕
+                            </button>
+
+                        </div>
+
+                    ))}
 
             </div>
 
         </div>
+
     );
 }
 

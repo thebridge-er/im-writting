@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import Editor from "./components/Editor/Editor";
@@ -12,76 +12,42 @@ import "./App.css";
 
 function App() {
 
+  // SIDEBARS
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [notesOpen, setNotesOpen] = useState(false);
 
-  const [view, setView] = useState("editor");
-
-  const [chapters, setChapters] = useState([]);
-
-  useEffect(() => {
-
-    const savedChapters =
-
-      JSON.parse(localStorage.getItem("chapters"));
-
-    if (savedChapters) {
-
-      setChapters(savedChapters);
-    }
-
-  }, []);
-
-  useEffect(() => {
-
-    localStorage.setItem(
-      "chapters",
-      JSON.stringify(chapters)
-    );
-
-  }, [chapters]);
-
-  const [activeChapterId, setActiveChapterId] = useState(null);
-
-  useEffect(() => {
-
-    const savedActiveChapter =
-
-      JSON.parse(
-        localStorage.getItem("activeChapterId")
-      );
-
-    if (savedActiveChapter) {
-
-      setActiveChapterId(savedActiveChapter);
-    }
-
-  }, []);
-
-  useEffect(() => {
-
-    localStorage.setItem(
-      "activeChapterId",
-      JSON.stringify(activeChapterId)
-    );
-
-  }, [activeChapterId]);
-
   const [outlineOpen, setOutlineOpen] = useState(false);
 
-  const [user, setUser] = useState(
+  // VIEW
+  const [view, setView] = useState("editor");
 
-    JSON.parse(localStorage.getItem("loggedUser"))
+  // CHAPTERS
+  const [chapters, setChapters] = useState([]);
 
-  );
+  // ACTIVE CHAPTER
+  const [activeChapterId, setActiveChapterId] = useState(null);
 
+  // USER
+  const [user, setUser] = useState(() => {
+
+    const savedUser = localStorage.getItem("loggedUser");
+
+    return savedUser
+      ? JSON.parse(savedUser)
+      : null;
+
+  });
+
+  // LOGIN SCREEN
   if (!user) {
 
     return <Auth setUser={setUser} />;
+
   }
 
   return (
+
     <div className="app">
 
       {/* MENU BUTTON */}
@@ -100,29 +66,30 @@ function App() {
         📝
       </button>
 
+      {/* LEFT SIDEBAR */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setView={setView}
         setOutlineOpen={setOutlineOpen}
       />
 
-      {/* VIEWS */}
+      {/* CHAPTERS SIDEBAR */}
+      {outlineOpen && (
 
+        <Outline
+          chapters={chapters}
+          setChapters={setChapters}
+          activeChapterId={activeChapterId}
+          setActiveChapterId={setActiveChapterId}
+          setOutlineOpen={setOutlineOpen}
+        />
+
+      )}
+
+      {/* EDITOR */}
       {view === "editor" && (
 
         <div className="editor-layout">
-
-          {outlineOpen && (
-
-            <Outline
-              chapters={chapters}
-              setChapters={setChapters}
-              activeChapterId={activeChapterId}
-              setActiveChapterId={setActiveChapterId}
-              setOutlineOpen={setOutlineOpen}
-            />
-
-          )}
 
           <Editor
             chapters={chapters}
@@ -134,13 +101,17 @@ function App() {
 
       )}
 
+      {/* TIMELINE */}
       {view === "timeline" && <Timeline />}
 
+      {/* CHARACTERS */}
       {view === "characters" && <Characters />}
 
+      {/* NOTES */}
       <Notes notesOpen={notesOpen} />
 
     </div>
+
   );
 }
 
