@@ -12,23 +12,18 @@ import "./App.css";
 
 function App() {
 
-  // SIDEBARS
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [notesOpen, setNotesOpen] = useState(false);
 
   const [outlineOpen, setOutlineOpen] = useState(false);
 
-  // VIEW
   const [view, setView] = useState("editor");
 
-  // CHAPTERS
   const [chapters, setChapters] = useState([]);
 
-  // ACTIVE CHAPTER
   const [activeChapterId, setActiveChapterId] = useState(null);
 
-  // USER
   const [user, setUser] = useState(() => {
 
     const savedUser = localStorage.getItem("loggedUser");
@@ -39,7 +34,6 @@ function App() {
 
   });
 
-  // LOGIN SCREEN
   if (!user) {
 
     return <Auth setUser={setUser} />;
@@ -50,7 +44,6 @@ function App() {
 
     <div className="app">
 
-      {/* MENU BUTTON */}
       <button
         className="menu-button"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -58,7 +51,6 @@ function App() {
         ☰
       </button>
 
-      {/* NOTES BUTTON */}
       <button
         className="notes-button"
         onClick={() => setNotesOpen(!notesOpen)}
@@ -66,14 +58,12 @@ function App() {
         📝
       </button>
 
-      {/* LEFT SIDEBAR */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setView={setView}
         setOutlineOpen={setOutlineOpen}
       />
 
-      {/* CHAPTERS SIDEBAR */}
       {outlineOpen && (
 
         <Outline
@@ -86,7 +76,6 @@ function App() {
 
       )}
 
-      {/* EDITOR */}
       {view === "editor" && (
 
         <div className="editor-layout">
@@ -101,13 +90,10 @@ function App() {
 
       )}
 
-      {/* TIMELINE */}
       {view === "timeline" && <Timeline />}
 
-      {/* CHARACTERS */}
       {view === "characters" && <Characters />}
 
-      {/* NOTES */}
       <Notes notesOpen={notesOpen} />
 
     </div>

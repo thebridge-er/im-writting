@@ -7,8 +7,16 @@ function Editor({
 }) {
 
     const activeChapter = chapters.find(
-        ch => ch._id === activeChapterId
+        (ch) => ch._id === activeChapterId
     );
+
+    // WORD COUNT
+    const wordCount = activeChapter?.content
+        ? activeChapter.content
+            .trim()
+            .split(/\s+/)
+            .filter(word => word !== "").length
+        : 0;
 
     function handleChange(e) {
 
@@ -45,7 +53,15 @@ function Editor({
 
         <div className="editor">
 
-            <h2>{activeChapter.title}</h2>
+            <div className="editor-header">
+
+                <h2>{activeChapter.title}</h2>
+
+                <p className="word-count">
+                    {wordCount} words
+                </p>
+
+            </div>
 
             <textarea
                 value={activeChapter.content}
