@@ -1,10 +1,31 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import "./Characters.css";
 
 function Characters() {
 
     const [characters, setCharacters] = useState([]);
+
+    useEffect(() => {
+
+        const savedCharacters =
+
+            JSON.parse(localStorage.getItem("characters"));
+
+        if (savedCharacters) {
+
+            setCharacters(savedCharacters);
+        }
+
+    }, []);
+
+    useEffect(() => {
+
+        localStorage.setItem(
+            "characters",
+            JSON.stringify(characters)
+        );
+
+    }, [characters]);
 
     const [showForm, setShowForm] = useState(false);
 

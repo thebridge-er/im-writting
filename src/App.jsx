@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Sidebar from "./components/Sidebar/Sidebar";
 import Editor from "./components/Editor/Editor";
@@ -20,7 +20,53 @@ function App() {
 
   const [chapters, setChapters] = useState([]);
 
+  useEffect(() => {
+
+    const savedChapters =
+
+      JSON.parse(localStorage.getItem("chapters"));
+
+    if (savedChapters) {
+
+      setChapters(savedChapters);
+    }
+
+  }, []);
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "chapters",
+      JSON.stringify(chapters)
+    );
+
+  }, [chapters]);
+
   const [activeChapterId, setActiveChapterId] = useState(null);
+
+  useEffect(() => {
+
+    const savedActiveChapter =
+
+      JSON.parse(
+        localStorage.getItem("activeChapterId")
+      );
+
+    if (savedActiveChapter) {
+
+      setActiveChapterId(savedActiveChapter);
+    }
+
+  }, []);
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "activeChapterId",
+      JSON.stringify(activeChapterId)
+    );
+
+  }, [activeChapterId]);
 
   const [outlineOpen, setOutlineOpen] = useState(false);
 

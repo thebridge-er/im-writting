@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Notes.css";
 
 function Notes({ notesOpen }) {
@@ -7,6 +7,28 @@ function Notes({ notesOpen }) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [notes, setNotes] = useState([]);
+
+    useEffect(() => {
+
+        const savedNotes =
+
+            JSON.parse(localStorage.getItem("notes"));
+
+        if (savedNotes) {
+
+            setNotes(savedNotes);
+        }
+
+    }, []);
+
+    useEffect(() => {
+
+        localStorage.setItem(
+            "notes",
+            JSON.stringify(notes)
+        );
+
+    }, [notes]);
 
     function handleAddNote() {
         if (title.trim() === "" || content.trim() === "") return;

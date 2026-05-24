@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./Timeline.css";
 
@@ -7,6 +7,28 @@ function Timeline() {
     const [title, setTitle] = useState("");
 
     const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+
+        const savedEvents =
+
+            JSON.parse(localStorage.getItem("timelineEvents"));
+
+        if (savedEvents) {
+
+            setEvents(savedEvents);
+        }
+
+    }, []);
+
+    useEffect(() => {
+
+        localStorage.setItem(
+            "timelineEvents",
+            JSON.stringify(events)
+        );
+
+    }, [events]);
 
     const [position, setPosition] = useState(0);
 
