@@ -10,6 +10,8 @@ const chapterRoutes = require("./routes/chapterRoutes");
 
 const app = express();
 
+const fetch = require("node-fetch");
+
 /* MIDDLEWARES */
 
 app.use(cors({
@@ -51,6 +53,30 @@ app.get("/", (req, res) => {
 /* PORT */
 
 const PORT = process.env.PORT || 5000;
+
+app.get("/api/quote", async (req, res) => {
+
+    try {
+
+        const response = await fetch(
+            "https://zenquotes.io/api/random"
+        );
+
+        const data = await response.json();
+
+        res.json(data[0]);
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            error: "Error fetching quote"
+        });
+
+    }
+
+});
 
 app.listen(PORT, () => {
 

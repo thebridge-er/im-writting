@@ -1,4 +1,5 @@
 import "./Sidebar.css";
+import Quote from "../Quote/Quote";
 
 function Sidebar({
     sidebarOpen,
@@ -33,10 +34,12 @@ function Sidebar({
             <button onClick={() => setView("characters")}>
                 Characters
             </button>
+            <Quote />
 
             <button className="logout-button" onClick={logout}>
                 Log out
             </button>
+
 
         </div>
     );
