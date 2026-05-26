@@ -161,7 +161,7 @@ Aunque la aplicación ya es funcional, hay muchas ideas que podrían implementar
 - Editor de texto más potente con selección de tipografía, subrayados y negrita.
 - Personalización del escritorio.
 - Notas que imiten post-it.
-- Timeline más viual e intuitiva.
+- Timeline más visual e intuitiva.
 
 
 ---
@@ -171,7 +171,7 @@ Aunque la aplicación ya es funcional, hay muchas ideas que podrían implementar
 Primero hay que clonar el repositorio:
 
 ```bash
-git clone <URL_DEL_REPO>
+git clone < https://github.com/thebridge-er/im-writting.git >
 ```
 
 Entrar en la carpeta del proyecto:
